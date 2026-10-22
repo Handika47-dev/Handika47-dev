@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07131f">
+  <meta name="description" content="Cuci motor keliling area Poka dan Rumah Tiga, Ambon. Motor bersih, kami yang datang ke rumahmu.">
+  <title>Cuci Motor Keliling | Poka & Rumah Tiga</title>
+  <style>
+    :root {
+      --bg: #07131f;
+      --bg-soft: #0d2030;
+      --card: rgba(17, 39, 55, .82);
+      --text: #f4fbff;
+      --muted: #a9bdca;
+      --mint: #4df0c2;
+      --blue: #4ab8ff;
+      --line: rgba(255,255,255,.12);
+      --nav-height: 72px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+    body {
+      margin: 0; color: var(--text); background: var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6; overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    .container { width: min(1120px, calc(100% - 40px)); margin-inline: auto; }
+    .ambient {
+      position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(ellipse at 15% 8%, rgba(26, 132, 159, .20), transparent 36%),
+        radial-gradient(ellipse at 90% 42%, rgba(42, 102, 190, .17), transparent 38%),
+        linear-gradient(180deg, #07131f 0%, #091a29 52%, #07131f 100%);
+    }
+    .ambient::before, .ambient::after {
+      content: ""; position: absolute; width: 340px; height: 340px; border-radius: 50%;
+      filter: blur(70px); opacity: .16; animation: floatGlow 12s ease-in-out infinite alternate;
+    }
+    .ambient::before { background: var(--mint); top: 18%; left: -180px; }
+    .ambient::after { background: var(--blue); right: -180px; top: 55%; animation-delay: -5s; }
+    @keyframes floatGlow { from { transform: translate3d(0,-15px,0) scale(.9); } to { transform: translate3d(30px,35px,0) scale(1.12); } }
+    .site-header {
+      position: sticky; top: 0; z-index: 1000; height: var(--nav-height);
+      display: flex; align-items: center; border-bottom: 1px solid transparent;
+      background: rgba(7,19,31,.32); transition: background .3s ease, border-color .3s ease, box-shadow .3s ease, backdrop-filter .3s ease;
+    }
+    .site-header.scrolled {
+      background: rgba(7,19,31,.86); border-color: var(--line);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 10px 35px rgba(0,0,0,.18);
+    }
+    .nav-wrap { display: flex; align-items: center; justify-content: space-between; gap: 22px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 850; letter-spacing: -.04em; white-space: nowrap; }
+    .brand-mark {
+      display: grid; place-items: center; width: 39px; height: 39px; border-radius: 13px;
+      color: #04221d; background: linear-gradient(135deg, var(--mint), var(--blue));
+      box-shadow: 0 5px 22px rgba(77,240,194,.18);
+    }
+    .brand-name { font-size: 1rem; }
+    .brand-name span { color: var(--mint); }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-links a {
+      position: relative; color: #c5d5df; font-size: .91rem; font-weight: 650; padding: 8px 0; transition: color .2s ease;
+    }
+    .nav-links a::after {
+      content: ""; position: absolute; height: 2px; left: 0; right: 0; bottom: 1px;
+      transform: scaleX(0); transform-origin: left; background: var(--mint); transition: transform .25s ease;
+    }
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
+    .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+    .nav-cta { padding: 10px 16px; border-radius: 999px; font-size: .88rem; font-weight: 800; color: #04221d; background: var(--mint); transition: transform .2s, box-shadow .2s; }
+    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(77,240,194,.2); }
+    .hamburger {
+      display: none; position: relative; z-index: 1002; width: 44px; height: 44px; padding: 10px;
+      border: 1px solid var(--line); border-radius: 13px; background: rgba(255,255,255,.05); color: white; cursor: pointer;
+    }
+    .hamburger span { display: block; width: 20px; height: 2px; margin: 5px auto; background: currentColor; border-radius: 5px; transition: transform .25s, opacity .2s; }
+    .hamburger.open span:first-child { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:last-child { transform: translateY(-7px) rotate(-45deg); }
+    main, footer { position: relative; z-index: 1; }
+    section { position: relative; padding: 94px 0; }
+    .hero { min-height: min(790px, calc(100svh - 72px)); display: grid; align-items: center; padding: 72px 0 96px; }
+    .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 9px; padding: 7px 12px; border: 1px solid rgba(77,240,194,.25);
+      border-radius: 999px; background: rgba(77,240,194,.07); color: #a8ffe8; font-size: .78rem; font-weight: 800; letter-spacing: .09em; text-transform: uppercase;
+    }
+    .status-dot { width: 7px; height: 7px; background: var(--mint); border-radius: 50%; box-shadow: 0 0 0 5px rgba(77,240,194,.12); }
+    h1 { margin: 22px 0 18px; font-size: clamp(2.7rem, 6.5vw, 5.6rem); line-height: .99; letter-spacing: -.065em; font-weight: 900; }
+    .gradient-text {
+      color: transparent; background: linear-gradient(100deg, var(--mint), #65cfff, #b0a2ff, var(--mint));
+      background-size: 250% auto; -webkit-background-clip: text; background-clip: text;
+      animation: gradientMove 7s linear infinite;
+    }
+    @keyframes gradientMove { to { background-position: 250% center; } }
+    .hero-sub { max-width: 520px; min-height: 58px; margin: 0; color: #b9cbd7; font-size: clamp(1.05rem, 2vw, 1.25rem); }
+    .typed { color: #f6fbff; font-weight: 750; }
+    .caret { display: inline-block; width: 2px; height: 1em; margin-left: 3px; vertical-align: -.12em; background: var(--mint); animation: blink .8s step-end infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 30px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 14px 20px;
+      border: 0; border-radius: 15px; cursor: pointer; font-weight: 850; transition: transform .22s ease, box-shadow .22s ease, background .22s ease;
+    }
+    .btn-primary { color: #04221d; background: linear-gradient(115deg, var(--mint), #83f5d9); box-shadow: 0 10px 28px rgba(77,240,194,.16); }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 34px rgba(77,240,194,.26); }
+    .btn-ghost { color: #edf8ff; border: 1px solid var(--line); background: rgba(255,255,255,.045); }
+    .btn-ghost:hover { transform: translateY(-3px); background: rgba(255,255,255,.09); }
+    .hero-note { display: flex; align-items: center; gap: 9px; margin-top: 20px; color: #8fa7b6; font-size: .86rem; }
+    .hero-note svg { color: var(--mint); flex-shrink: 0; }
+    .hero-visual { position: relative; min-height: 390px; display: grid; place-items: center; }
+    .visual-ring { position: absolute; width: min(390px, 90%); aspect-ratio: 1; border: 1px solid rgba(112,220,245,.16); border-radius: 50%; animation: ringSpin 28s linear infinite; }
+    .visual-ring::before, .visual-ring::after { content: ""; position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 20px var(--mint); }
+    .visual-ring::before { top: 12%; left: 20%; }
+    .visual-ring::after { right: 7%; bottom: 25%; width: 7px; height: 7px; background: var(--blue); box-shadow: 0 0 18px var(--blue); }
+    @keyframes ringSpin { to { transform: rotate(360deg); } }
+    .bike-card {
+      position: relative; width: min(390px, 100%); aspect-ratio: 1 / 1.04; display: flex; align-items: center; justify-content: center;
+      overflow: hidden; border: 1px solid rgba(255,255,255,.14); border-radius: 34px;
+      background: linear-gradient(145deg, rgba(24,58,77,.84), rgba(10,25,39,.82));
+      box-shadow: 0 28px 80px rgba(0,0,0,.25), inset 0 1px rgba(255,255,255,.07);
+      transform: rotate(2deg); transition: transform .45s cubic-bezier(.2,.8,.2,1);
+    }
+    .bike-card:hover { transform: rotate(0) translateY(-5px); }
+    .bike-card::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at 50% 45%, rgba(77,240,194,.14), transparent 55%); }
+    .bike-svg { width: 88%; position: relative; z-index: 1; filter: drop-shadow(0 20px 22px rgba(0,0,0,.28)); }
+    .shine { position: absolute; width: 150%; height: 40%; left: -30%; top: 0; transform: rotate(-35deg) translateY(-140%); background: linear-gradient(90deg, transparent, rgba(255,255,255,.10), transparent); animation: shine 6s ease-in-out infinite; pointer-events: none; }
+    @keyframes shine { 0%, 55% { transform: rotate(-35deg) translateY(-150%); } 85%,100% { transform: rotate(-35deg) translateY(360%); } }
+    .floating-tag { position: absolute; z-index: 2; display: flex; align-items: center; gap: 9px; padding: 12px 15px; border: 1px solid rgba(255,255,255,.13); border-radius: 15px; background: rgba(8,24,37,.88); box-shadow: 0 14px 30px rgba(0,0,0,.22); backdrop-filter: blur(12px); font-size: .83rem; font-weight: 800; }
+    .floating-tag strong { display: block; font-size: .96rem; }
+    .floating-tag small { display: block; color: var(--muted); font-size: .72rem; font-weight: 600; }
+    .tag-price { top: 13%; right: -3%; }
+    .tag-area { bottom: 12%; left: -5%; }
+    .tag-icon { display: grid; place-items: center; width: 35px; height: 35px; border-radius: 11px; color: var(--mint); background: rgba(77,240,194,.12); }
+    .section-head { max-width: 650px; margin: 0 auto 42px; text-align: center; }
+    .kicker { color: var(--mint); font-size: .77rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 850; }
+    h2 { margin: 10px 0 13px; font-size: clamp(2rem, 4.3vw, 3.25rem); line-height: 1.1; letter-spacing: -.05em; }
+    .section-head p { margin: 0; color: var(--muted); }
+    .service-area { padding-top: 48px; }
+    .service-card-wrap { width: min(510px, 100%); margin: 0 auto; perspective: 1000px; }
+    .service-card {
+      position: relative; padding: 30px; border: 1px solid rgba(255,255,255,.13); border-radius: 27px;
+      background: linear-gradient(145deg, rgba(21,49,67,.92), rgba(10,26,40,.92)); overflow: hidden;
+      box-shadow: 0 24px 65px rgba(0,0,0,.2); transform-style: preserve-3d; transition: transform .18s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+    .service-card::before { content: ""; position: absolute; top: -110px; right: -80px; width: 230px; height: 230px; border-radius: 50%; background: rgba(77,240,194,.12); filter: blur(30px); pointer-events: none; }
+    .service-icon { display: grid; place-items: center; width: 65px; height: 65px; border-radius: 20px; color: var(--mint); background: rgba(77,240,194,.1); border: 1px solid rgba(77,240,194,.16); }
+    .service-card h3 { margin: 22px 0 4px; font-size: 1.45rem; letter-spacing: -.025em; }
+    .price { margin: 0; color: var(--mint); font-size: clamp(2.1rem, 6vw, 3rem); line-height: 1.15; font-weight: 900; letter-spacing: -.06em; }
+    .price-note { color: var(--muted); font-size: .91rem; margin: 9px 0 22px; }
+    .feature-list { display: grid; gap: 11px; padding: 0; margin: 0 0 25px; list-style: none; color: #d5e3ea; font-size: .92rem; }
+    .feature-list li { display: flex; align-items: flex-start; gap: 10px; }
+    .check { color: var(--mint); font-weight: 900; }
+    .area-alert { display: flex; gap: 12px; align-items: flex-start; margin: 24px 0 0; padding: 16px; border: 1px solid rgba(255,190,92,.28); border-radius: 16px; background: rgba(255,190,92,.07); color: #ffe1ad; font-size: .9rem; font-weight: 800; }
+    .area-alert svg { flex-shrink: 0; margin-top: 2px; }
+    .service-card .btn { width: 100%; }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .step-card { position: relative; padding: 27px 24px; border: 1px solid var(--line); border-radius: 23px; background: rgba(14,34,49,.72); transition: transform .3s, border-color .3s, background .3s; }
+    .step-card:hover { transform: translateY(-6px); border-color: rgba(77,240,194,.35); background: rgba(17,44,60,.9); }
+    .step-number { display: grid; place-items: center; width: 43px; height: 43px; margin-bottom: 22px; border-radius: 14px; color: var(--mint); background: rgba(77,240,194,.1); font-weight: 900; }
+    .step-card h3 { margin: 0 0 9px; font-size: 1.1rem; }
+    .step-card p { margin: 0; color: var(--muted); font-size: .92rem; }
+    .step-icon { color: var(--mint); margin-bottom: 12px; }
+    .cta-panel { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: clamp(25px, 5vw, 48px); border: 1px solid rgba(77,240,194,.22); border-radius: 30px; background: linear-gradient(110deg, rgba(24,79,79,.45), rgba(18,48,77,.55)); overflow: hidden; }
+    .cta-panel h2 { max-width: 520px; margin-top: 0; font-size: clamp(1.8rem, 4vw, 2.7rem); }
+    .cta-panel p { margin: 0; color: #b6ccd7; }
+    .cta-panel .btn { flex-shrink: 0; }
+    footer { padding: 28px 0 36px; border-top: 1px solid var(--line); color: #8fa7b6; font-size: .83rem; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .footer-brand { color: #e8f5fa; font-weight: 800; }
+    .wa-float {
+      position: fixed; right: 20px; bottom: 20px; z-index: 1100; width: 62px; height: 62px; display: grid; place-items: center;
+      border: 1px solid rgba(255,255,255,.35); border-radius: 50%; color: white; background: #20c875;
+      box-shadow: 0 9px 28px rgba(32,200,117,.3); animation: pulse 2.1s ease-out infinite; transition: transform .2s;
+    }
+    .wa-float:hover { transform: scale(1.08); }
+    .wa-float svg { width: 29px; height: 29px; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(32,200,117,.48), 0 9px 28px rgba(32,200,117,.25); } 70% { box-shadow: 0 0 0 13px rgba(32,200,117,0), 0 9px 28px rgba(32,200,117,.25); } 100% { box-shadow: 0 0 0 0 rgba(32,200,117,0), 0 9px 28px rgba(32,200,117,.25); } }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .counter { font-variant-numeric: tabular-nums; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    @media (max-width: 850px) {
+      .hero-grid { grid-template-columns: 1fr .8fr; gap: 22px; }
+      .hero-visual { min-height: 330px; }
+      .tag-price { right: -1%; }
+      .tag-area { left: -1%; }
+      .nav-links { gap: 18px; }
+      .nav-cta { display: none; }
+      .steps { gap: 12px; }
+      .step-card { padding: 23px 18px; }
+    }
+    @media (max-width: 680px) {
+      :root { --nav-height: 66px; }
+      .container { width: min(100% - 32px, 520px); }
+      .site-header { height: var(--nav-height); }
+      .hamburger { display: block; }
+      .nav-links {
+        position: absolute; top: calc(100% + 1px); left: 0; right: 0; display: flex; flex-direction: column; align-items: stretch; gap: 3px;
+        padding: 12px 16px 18px; border-bottom: 1px solid var(--line); background: rgba(7,19,31,.97);
+        backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+        opacity: 0; visibility: hidden; transform: translateY(-10px); transition: opacity .24s, transform .24s, visibility .24s;
+      }
+      .nav-links.open { opacity: 1; visibility: visible; transform: translateY(0); }
+      .nav-links a { padding: 12px 5px; }
+      .nav-links a::after { bottom: 5px; right: auto; width: 38px; }
+      .nav-links a.active::after { transform: scaleX(1); }
+      .hero { min-height: auto; padding: 58px 0 72px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 24px; }
+      h1 { font-size: clamp(2.75rem, 13vw, 4.4rem); margin-top: 19px; }
+      .hero-sub { min-height: 56px; }
+      .hero-visual { min-height: 330px; margin: 0 8px; }
+      .bike-card { width: min(310px, 88%); border-radius: 28px; }
+      .visual-ring { width: min(315px, 90%); }
+      .floating-tag { padding: 10px 12px; }
+      .tag-price { top: 9%; right: -1%; }
+      .tag-area { bottom: 8%; left: -1%; }
+      section { padding: 72px 0; }
+      .service-area { padding-top: 26px; }
+      .section-head { margin-bottom: 30px; }
+      .steps { grid-template-columns: 1fr; }
+      .step-card { display: grid; grid-template-columns: 48px 1fr; column-gap: 14px; padding: 20px; }
+      .step-number { grid-row: span 2; margin: 0; }
+      .step-card h3 { align-self: end; }
+      .step-card p { margin-top: 4px; }
+      .cta-panel { flex-direction: column; align-items: flex-start; }
+      .cta-panel .btn { width: 100%; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+      .wa-float { right: 16px; bottom: 16px; width: 57px; height: 57px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <header class="site-header" id="siteHeader">
+    <div class="container nav-wrap">
+      <a class="brand" href="#beranda" aria-label="Cuci Motor Keliling, beranda">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="23" height="23" viewBox="0 0 24 24" fill="none"><path d="M4 15.5 6.2 10h7.4l3.1 5.5M6.4 10 4.8 7.5H2.5M12.8 10l2-3h3.1l2.3 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="16.5" r="3" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="16.5" r="3" stroke="currentColor" stroke-width="2"/><path d="M10 5.5h.01M21 4l.01.01M18.5 2.5l.01.01" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </span>
+        <span class="brand-name">CUCI<span> SATSET</span></span>
+      </a>
+      <nav class="nav-links" id="navLinks" aria-label="Menu utama">
+        <a href="#beranda" class="active">Beranda</a>
+        <a href="#layanan">Layanan</a>
+        <a href="#cara-pesan">Cara Pesan</a>
+        <a href="#pesan">Pesan</a>
+      </nav>
+      <button class="hamburger" id="hamburger" type="button" aria-label="Buka menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="beranda">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="status-dot"></span> Praktis • Panggil ke rumah</div>
+          <h1><span class="gradient-text">Cuci Motor</span><br>Keliling.</h1>
+          <p class="hero-sub">Motor bersih, kami yang datang ke rumahmu. <span class="typed" id="typedText">Praktis tanpa repot.</span><span class="caret" aria-hidden="true"></span></p>
+          <div class="hero-actions">
+            <button class="btn btn-primary wa-order" type="button">
+              Pesan via WhatsApp
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <a class="btn btn-ghost" href="#layanan">Lihat layanan <span aria-hidden="true">↓</span></a>
+          </div>
+          <div class="hero-note">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s7-4.5 7-11a7 7 0 1 0-14 0c0 6.5 7 11 7 11Z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.5" stroke="currentColor" stroke-width="1.8"/></svg>
+            Khusus area Poka & Rumah Tiga, Ambon
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-label="Ilustrasi motor bersih">
+          <div class="visual-ring" aria-hidden="true"></div>
+          <div class="bike-card" id="bikeCard">
+            <div class="shine"></div>
+            <svg class="bike-svg" viewBox="0 0 420 330" role="img" aria-label="Ilustrasi skuter modern berwarna biru kehijauan">
+              <defs>
+                <linearGradient id="bodyPaint" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8affdf"/><stop offset=".5" stop-color="#3cc7bd"/><stop offset="1" stop-color="#138a9d"/></linearGradient>
+                <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d9f4f6"/><stop offset="1" stop-color="#6b8c9a"/></linearGradient>
+              </defs>
+              <ellipse cx="210" cy="274" rx="150" ry="17" fill="#020a11" opacity=".35"/>
+              <g stroke="#07131f" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="112" cy="240" r="47" fill="#101b27"/>
+                <circle cx="112" cy="240" r="29" fill="#526e7b" stroke="#91aeb9" stroke-width="5"/>
+                <circle cx="112" cy="240" r="8" fill="#d9f4f6" stroke="none"/>
+                <circle cx="315" cy="240" r="47" fill="#101b27"/>
+                <circle cx="315" cy="240" r="29" fill="#526e7b" stroke="#91aeb9" stroke-width="5"/>
+                <circle cx="315" cy="240" r="8" fill="#d9f4f6" stroke="none"/>
+                <path d="M112 240 162 167 248 168 315 240" fill="none" stroke="#7f9ba8" stroke-width="11"/>
+                <path d="M162 167 200 225 315 240" fill="none" stroke="#263d4b" stroke-width="14"/>
+                <path d="M146 150 Q145 128 172 122 L242 122 Q264 126 276 151 L291 190 Q295 203 279 207 L220 207 Q200 207 190 193 L158 171 Q145 164 146 150Z" fill="url(#bodyPaint)"/>
+                <path d="M202 124 215 86 Q219 75 232 76 L265 80 Q277 82 281 94 L290 124" fill="#19394a"/>
+                <path d="M215 86 255 89 266 108 207 108Z" fill="#80c8d8" stroke-width="5"/>
+                <path d="M270 151 301 149 324 173 329 195 294 201" fill="url(#bodyPaint)"/>
+                <path d="M315 169 335 154 355 154" fill="none" stroke="url(#metal)" stroke-width="9"/>
+                <path d="M353 153 365 137" fill="none" stroke="#cce8ed" stroke-width="7"/>
+                <path d="M344 136 373 137" fill="none" stroke="#cce8ed" stroke-width="7"/>
+                <path d="M185 112 156 112 142 127" fill="none" stroke="#cce8ed" stroke-width="7"/>
+                <path d="M150 148 126 142 119 151" fill="none" stroke="#cce8ed" stroke-width="7"/>
+                <path d="M165 168 151 224" fill="none" stroke="#e4f7fa" stroke-width="6"/>
+                <path d="M219 206 225 235 277 235" fill="none" stroke="#101b27" stroke-width="12"/>
+                <path d="M181 110 Q187 99 203 101 L240 101" fill="none" stroke="#07131f" stroke-width="14"/>
+                <path d="M183 111 Q189 105 202 106 L237 106" fill="none" stroke="#253e4e" stroke-width="8"/>
+                <path d="M285 206 304 218" fill="none" stroke="#ffca78" stroke-width="8"/>
+                <path d="M295 215 309 218" fill="none" stroke="#f7fbff" stroke-width="5"/>
+              </g>
+              <g fill="#eafcff"><circle cx="91" cy="89" r="4"/><circle cx="326" cy="76" r="3"/><circle cx="352" cy="104" r="5"/></g>
+              <g fill="none" stroke="#4df0c2" stroke-width="3" stroke-linecap="round" opacity=".8"><path d="M72 119l-10-5m18-9-5-10M339 58l8-8m-2 23 11 1"/></g>
+            </svg>
+          </div>
+          <div class="floating-tag tag-price">
+            <span class="tag-icon" aria-hidden="true">✦</span>
+            <span><strong>Rp25.000</strong><small>Harga jelas</small></span>
+          </div>
+          <div class="floating-tag tag-area">
+            <span class="tag-icon" aria-hidden="true">⌖</span>
+            <span><strong>Datang ke lokasi</strong><small>Area Poka & Rumah Tiga</small></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="service-area" id="layanan">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="kicker">Layanan kami</div>
+          <h2>Motor bersih, <span class="gradient-text">hati senang.</span></h2>
+          <p>Satu layanan yang simpel dan jelas. Pesan dulu lewat WhatsApp, lalu bagikan lokasi kamu.</p>
+        </div>
+        <div class="service-card-wrap reveal" id="tiltWrap">
+          <article class="service-card" id="serviceCard">
+            <div class="service-icon" aria-hidden="true">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M3 14.5 5.5 9h7l3 5.5M5.5 9 4 6.5H2M12.5 9l2-3h3l2.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="16" r="3" stroke="currentColor" stroke-width="1.8"/><circle cx="17" cy="16" r="3" stroke="currentColor" stroke-width="1.8"/><path d="m16 3 1 2m3-1-2 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <h3>Cuci Bersih</h3>
+            <p class="price"><span class="counter" data-target="25000">0</span></p>
+            <p class="price-note">Satu harga, tanpa bikin bingung.</p>
+            <ul class="feature-list">
+              <li><span class="check">✓</span><span>Cuci motor praktis di lokasi kamu.</span></li>
+              <li><span class="check">✓</span><span>Atur jadwal langsung melalui WhatsApp.</span></li>
+              <li><span class="check">✓</span><span>Konfirmasi dulu sebelum kami berangkat.</span></li>
+            </ul>
+            <button class="btn btn-primary wa-order" type="button">Pesan Cuci Motor <span aria-hidden="true">→</span></button>
+            <div class="area-alert">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 22 20H2L12 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 9v5m0 3h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <span>Harga khusus daerah Poka dan Rumah Tiga, Ambon saja.</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="cara-pesan">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="kicker">Gampang banget</div>
+          <h2>Cara pesan dalam <span class="gradient-text">3 langkah.</span></h2>
+          <p>Nggak perlu datang ke tempat cuci. Ikuti langkah berikut untuk memesan.</p>
+        </div>
+        <div class="steps">
+          <article class="step-card reveal">
+            <div class="step-number">01</div>
+            <h3>Klik tombol WhatsApp</h3>
+            <p>Tekan tombol pesan di website ini untuk membuka chat WhatsApp dengan format pesan otomatis.</p>
+          </article>
+          <article class="step-card reveal">
+            <div class="step-number">02</div>
+            <h3>Kirim lokasi kamu</h3>
+            <p>Setelah pesan terkirim, bagikan lokasi melalui fitur <em>share location</em> di WhatsApp.</p>
+          </article>
+          <article class="step-card reveal">
+            <div class="step-number">03</div>
+            <h3>Tunggu konfirmasi</h3>
+            <p>Kami konfirmasi jadwal terlebih dahulu, lalu datang ke lokasi sesuai kesepakatan.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="pesan">
+      <div class="container">
+        <div class="cta-panel reveal">
+          <div>
+            <div class="kicker">Siap pesan?</div>
+            <h2>Motor kotor? Biar kami yang datang.</h2>
+            <p>Hubungi kami lewat WhatsApp dan kirim lokasi kamu. Khusus Poka & Rumah Tiga, Ambon.</p>
+          </div>
+          <button class="btn btn-primary wa-order" type="button">
+            Pesan Sekarang
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div><span class="footer-brand">CUCI SATSET</span> <span>· Cuci Motor Keliling</span></div>
+      <div>© <span id="year"></span> • Poka & Rumah Tiga, Ambon</div>
+    </div>
+  </footer>
+
+  <a class="wa-float wa-order-link" href="https://wa.me/6281248660675" target="_blank" rel="noopener noreferrer" aria-label="Pesan melalui WhatsApp">
+    <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16.04 3C8.88 3 3.05 8.78 3.05 15.9c0 2.28.61 4.5 1.77 6.45L3 29l6.85-1.79a13.1 13.1 0 0 0 6.19 1.57h.01c7.16 0 13-5.79 13-12.9A12.84 12.84 0 0 0 16.04 3Zm0 23.6h-.01c-1.93 0-3.82-.52-5.46-1.5l-.39-.23-4.07 1.06 1.09-3.95-.25-.4a10.65 10.65 0 0 1-1.65-5.68c0-5.9 4.83-10.7 10.76-10.7 2.87 0 5.57 1.11 7.6 3.13a10.6 10.6 0 0 1 3.15 7.56c0 5.9-4.83 10.7-10.77 10.7Zm5.9-8.02c-.32-.16-1.91-.94-2.2-1.05-.3-.1-.51-.16-.73.16-.21.32-.83 1.05-1.02 1.27-.19.21-.38.24-.7.08-.33-.16-1.37-.5-2.61-1.59-.97-.86-1.62-1.92-1.81-2.24-.19-.32-.02-.49.14-.65.14-.14.32-.38.48-.57.16-.19.21-.32.32-.54.11-.21.05-.4-.03-.56-.08-.16-.73-1.75-1-2.4-.27-.63-.54-.55-.73-.56h-.62c-.21 0-.56.08-.86.4-.3.32-1.13 1.1-1.13 2.67s1.16 3.09 1.32 3.3c.16.21 2.28 3.47 5.52 4.87.77.33 1.37.53 1.84.68.77.24 1.47.21 2.02.13.62-.09 1.91-.78 2.18-1.54.27-.75.27-1.4.19-1.54-.08-.13-.29-.21-.62-.37Z"/></svg>
+  </a>
+
+  <script>
+    // Konstanta utama
+    const WA_NUMBER = "6281248660675";
+    const HARGA = "Rp25.000";
+
+    // Semua tombol pesan menggunakan fungsi yang sama.
+    function pesanWhatsApp() {
+      try {
+        const pesan = `Halo kak, saya mau pesan Cuci Motor Keliling (${HARGA}).
+Mohon dicek ya:
+1. Nama saya:
+2. Wilayah (Poka / Rumah Tiga):
+3. Saya kirim lokasi (share location) setelah pesan ini.
+4. Apakah kakak bisa datang hari ini / besok? Jam berapa?
+Terima kasih.`;
+        const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(pesan)}`;
+        window.open(url, "_blank", "noopener,noreferrer");
+      } catch (error) {
+        try {
+          const pesanCadangan = encodeURIComponent(`Halo kak, saya mau pesan Cuci Motor Keliling (${HARGA}).`);
+          window.location.href = `https://wa.me/${WA_NUMBER}?text=${pesanCadangan}`;
+        } catch (fallbackError) {
+          console.error("Tidak dapat membuka WhatsApp:", fallbackError);
+        }
+      }
+    }
+
+    (function initWebsite() {
+      try {
+        const header = document.getElementById("siteHeader");
+        const hamburger = document.getElementById("hamburger");
+        const navLinks = document.getElementById("navLinks");
+        const navItems = Array.from(document.querySelectorAll(".nav-links a"));
+        const orderButtons = document.querySelectorAll(".wa-order");
+        const orderLink = document.querySelector(".wa-order-link");
+
+        orderButtons.forEach(button => {
+          button.addEventListener("click", pesanWhatsApp);
+        });
+        if (orderLink) {
+          orderLink.addEventListener("click", function (event) {
+            event.preventDefault();
+            pesanWhatsApp();
+          });
+        }
+
+        function closeMenu() {
+          if (!hamburger || !navLinks) return;
+          hamburger.classList.remove("open");
+          navLinks.classList.remove("open");
+          hamburger.setAttribute("aria-expanded", "false");
+          hamburger.setAttribute("aria-label", "Buka menu");
+        }
+        if (hamburger && navLinks) {
+          hamburger.addEventListener("click", function () {
+            const isOpen = hamburger.classList.toggle("open");
+            navLinks.classList.toggle("open", isOpen);
+            hamburger.setAttribute("aria-expanded", String(isOpen));
+            hamburger.setAttribute("aria-label", isOpen ? "Tutup menu" : "Buka menu");
+          });
+          navItems.forEach(link => link.addEventListener("click", closeMenu));
+          document.addEventListener("keydown", event => {
+            if (event.key === "Escape") closeMenu();
+          });
+        }
+
+        let ticking = false;
+        function updateScrollState() {
+          try {
+            const y = window.scrollY || document.documentElement.scrollTop;
+            if (header) header.classList.toggle("scrolled", y > 20);
+            const marker = y + Math.max(120, window.innerHeight * 0.32);
+            let currentId = "beranda";
+            document.querySelectorAll("main section[id]").forEach(section => {
+              if (section.offsetTop <= marker) currentId = section.id;
+            });
+            navItems.forEach(link => {
+              const active = link.getAttribute("href") === `#${currentId}`;
+              link.classList.toggle("active", active);
+              if (active) link.setAttribute("aria-current", "page");
+              else link.removeAttribute("aria-current");
+            });
+            ticking = false;
+          } catch (error) {
+            ticking = false;
+          }
+        }
+        window.addEventListener("scroll", function () {
+          if (!ticking) {
+            ticking = true;
+            window.requestAnimationFrame(updateScrollState);
+          }
+        }, { passive: true });
+        window.addEventListener("resize", updateScrollState);
+        updateScrollState();
+
+        // Scroll reveal dengan fallback jika IntersectionObserver tidak tersedia.
+        const revealItems = document.querySelectorAll(".reveal");
+        if ("IntersectionObserver" in window) {
+          const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0.12, rootMargin: "0px 0px -35px 0px" });
+          revealItems.forEach(item => revealObserver.observe(item));
+        } else {
+          revealItems.forEach(item => item.classList.add("visible"));
+        }
+
+        // Counter harga, tetap menampilkan format Rupiah.
+        const counter = document.querySelector(".counter");
+        if (counter) {
+          const target = Number(counter.dataset.target || 25000);
+          let started = false;
+          const animateCounter = () => {
+            if (started) return;
+            started = true;
+            const startTime = performance.now();
+            const duration = 1000;
+            function frame(now) {
+              try {
+                const progress = Math.min((now - startTime) / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 4);
+                const value = Math.round(target * eased);
+                counter.textContent = "Rp" + value.toLocaleString("id-ID");
+                if (progress < 1) requestAnimationFrame(frame);
+                else counter.textContent = HARGA;
+              } catch (error) {
+                counter.textContent = HARGA;
+              }
+            }
+            requestAnimationFrame(frame);
+          };
+          if ("IntersectionObserver" in window) {
+            const counterObserver = new IntersectionObserver((entries, observer) => {
+              if (entries.some(entry => entry.isIntersecting)) {
+                animateCounter();
+                observer.disconnect();
+              }
+            }, { threshold: 0.4 });
+            counterObserver.observe(counter);
+          } else animateCounter();
+        }
+
+        // Efek mengetik bergantian pada teks hero.
+        const typed = document.getElementById("typedText");
+        if (typed && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          const phrases = ["Praktis tanpa repot.", "Kami datang ke lokasimu.", "Pesan mudah lewat WhatsApp."];
+          let phraseIndex = 0, charIndex = phrases[0].length, deleting = true;
+          function typeLoop() {
+            try {
+              const phrase = phrases[phraseIndex];
+              if (deleting) {
+                charIndex--;
+                typed.textContent = phrase.slice(0, Math.max(0, charIndex));
+                if (charIndex <= 0) {
+                  deleting = false;
+                  phraseIndex = (phraseIndex + 1) % phrases.length;
+                  setTimeout(typeLoop, 280);
+                  return;
+                }
+                setTimeout(typeLoop, 38);
+              } else {
+                const nextPhrase = phrases[phraseIndex];
+                charIndex++;
+                typed.textContent = nextPhrase.slice(0, charIndex);
+                if (charIndex >= nextPhrase.length) {
+                  deleting = true;
+                  setTimeout(typeLoop, 1700);
+                  return;
+                }
+                setTimeout(typeLoop, 55);
+              }
+            } catch (error) {
+              typed.textContent = "Praktis tanpa repot.";
+            }
+          }
+          setTimeout(typeLoop, 1700);
+        }
+
+        // Tilt 3D pada kartu layanan untuk perangkat yang memiliki pointer presisi.
+        const tiltWrap = document.getElementById("tiltWrap");
+        const serviceCard = document.getElementById("serviceCard");
+        if (tiltWrap && serviceCard && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+          tiltWrap.addEventListener("mousemove", event => {
+            try {
+              const rect = tiltWrap.getBoundingClientRect();
+              const x = (event.clientX - rect.left) / rect.width;
+              const y = (event.clientY - rect.top) / rect.height;
+              const rotateY = (x - 0.5) * 8;
+              const rotateX = (0.5 - y) * 8;
+              serviceCard.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
+              serviceCard.style.borderColor = "rgba(77,240,194,.38)";
+              serviceCard.style.boxShadow = `${-rotateY * 1.5}px 22px 55px rgba(0,0,0,.23)`;
+            } catch (error) {}
+          });
+          tiltWrap.addEventListener("mouseleave", () => {
+            serviceCard.style.transform = "";
+            serviceCard.style.borderColor = "";
+            serviceCard.style.boxShadow = "";
+          });
+        }
+
+        const year = document.getElementById("year");
+        if (year) year.textContent = new Date().getFullYear();
+      } catch (error) {
+        console.error("Sebagian efek website tidak dapat dijalankan:", error);
+        document.querySelectorAll(".reveal").forEach(item => item.classList.add("visible"));
+      }
+    })();
+  </script>
+</body>
+</html>
